@@ -40,17 +40,21 @@ doxygen [-s] -g Doxyfile.in
   if(DOXYGEN_FOUND)
     # Stop the automatic inclusion of the doc target
     if(add_dox_args_NOT_AUTOMATIC)
-      set(ALL "")
+      # add a target to generate API documentation with Doxygen
+      add_custom_target(doc
+        ${DOXYGEN_EXECUTABLE} ${DEVEL_DOC_PATH}/Doxyfile
+        WORKING_DIRECTORY ${DEVEL_DOC_PATH}
+        COMMENT "Generating API documentation with Doxygen" VERBATIM
+        )
     else()
-      set(ALL "ALL")
+      # add a target to generate API documentation with Doxygen
+      add_custom_target(doc ALL
+        ${DOXYGEN_EXECUTABLE} ${DEVEL_DOC_PATH}/Doxyfile
+        WORKING_DIRECTORY ${DEVEL_DOC_PATH}
+        COMMENT "Generating API documentation with Doxygen" VERBATIM
+        )
     endif()
 
-    # add a target to generate API documentation with Doxygen
-    add_custom_target(doc ${ALL}
-      COMMAND ${DOXYGEN_EXECUTABLE} ${DEVEL_DOC_PATH}/Doxyfile
-      WORKING_DIRECTORY ${DEVEL_DOC_PATH}
-      COMMENT "Generating API documentation with Doxygen" VERBATIM
-      )
     install(DIRECTORY ${DEVEL_DOC_PATH} DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
   else()
     message("Unable to find Doxygen. API Documentation will not be generated")
