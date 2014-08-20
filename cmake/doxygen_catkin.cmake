@@ -32,7 +32,8 @@ doxygen [-s] -g Doxyfile.in
 ")
   endif()
 
-  set(doxygen_catkin_DOC_PATH "${CATKIN_DEVEL_PREFIX}/share/${PROJECT_NAME}/doc")
+  set(doxygen_catkin_DOC_DIR "${CATKIN_DEVEL_PREFIX}/share/${PROJECT_NAME}/doc")
+  file(MAKE_DIRECTORY ${doxygen_catkin_DOC_DIR})
 
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
 
@@ -43,19 +44,19 @@ doxygen [-s] -g Doxyfile.in
       # add a target to generate API documentation with Doxygen
       add_custom_target(doc
         ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-        WORKING_DIRECTORY ${doxygen_catkin_DOC_PATH}
+        WORKING_DIRECTORY ${doxygen_catkin_DOC_DIR}
         COMMENT "Generating API documentation with Doxygen" VERBATIM
         )
     else()
       # add a target to generate API documentation with Doxygen
       add_custom_target(doc ALL
         ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
-        WORKING_DIRECTORY ${doxygen_catkin_DOC_PATH}
+        WORKING_DIRECTORY ${doxygen_catkin_DOC_DIR}
         COMMENT "Generating API documentation with Doxygen" VERBATIM
         )
     endif()
 
-    install(DIRECTORY ${doxygen_catkin_DOC_PATH} DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
+    install(DIRECTORY ${doxygen_catkin_DOC_DIR} DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
   else()
     message("Unable to find Doxygen. API Documentation will not be generated")
   endif()
